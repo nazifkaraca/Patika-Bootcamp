@@ -1,3 +1,21 @@
+
+# Ignore Visual Studio files
+.vs/
+*.sln
+
+# Ignore build results
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.userosscache
+*.suo
+
+# Other folders and files to ignore
+node_modules/
+
+# Original content from the previous gitignore
 # Created by https://www.toptal.com/developers/gitignore/api/csharp,dotnetcore
 # Edit at https://www.toptal.com/developers/gitignore?templates=csharp,dotnetcore
 
