@@ -10,6 +10,7 @@ namespace Week2_4_TatilUygulaması
 
             do
             {
+                // Define all variables
                 string requestedLocation = string.Empty;
                 int guests = 0;
                 int transport = 0;
