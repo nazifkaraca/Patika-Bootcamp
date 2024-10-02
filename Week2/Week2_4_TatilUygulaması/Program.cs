@@ -6,7 +6,7 @@ namespace Week2_4_TatilUygulaması
     {
         static void Main(string[] args)
         {
-            char proceed = 'y'; // Declare proceed outside the loop to avoid scope issues
+            char proceed = 'y'; // Continue loop until otherwise
 
             do
             {
