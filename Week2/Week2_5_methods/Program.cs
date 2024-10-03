@@ -37,15 +37,15 @@
         /// Randomly generates a number between 0 and 100.
         /// </summary>
         /// <returns>Remainder of dividing the number by 2.</returns>
-        static int RandomInt()
+        static double RandomInt()
         {
             // Generate random number between 0 and 100.
             Random random = new Random();
-            int randomNumber = random.Next(0, 100);
+            int randomNumber = random.Next(1, 100);
 
             Console.WriteLine("2 - Geriye Tamsayı Döndüren Bir Metot.");
 
-            return randomNumber % 2;
+            return (double)randomNumber / 2;
         }
 
         /// <summary>
