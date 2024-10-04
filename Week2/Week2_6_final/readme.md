@@ -2,6 +2,7 @@
 
 Bu uygulama, Hafta 1 ve Hafta 2 konularını kapsayan 18 farklı alıştırmayı içerir. Her bir çözüm ayrı bir metot olarak tanımlanmış olup, bu metotları menü üzerinden seçip çalıştırabilirsiniz.
 
+<img src="https://github.com/user-attachments/assets/d57040b2-b6c0-4745-a43f-1e7421bbb734" >
 
 
 ## 📜 İçerik
@@ -14,14 +15,14 @@ Bu proje, çeşitli programlama problemlerini çözmeyi ve kullanıcıyla etkile
 2. Menüdeki seçeneklerden birini girerek ilgili programı çalıştırabilirsiniz.
 3. **0** numaralı seçeneği girerek programdan çıkabilirsiniz.
 
-Her bir seçenek, yukarıda açıklanan 18 alıştırmadan birine karşılık gelir.
+Her bir seçenek, yukarıda açıklanan 18 işlevden birine karşılık gelir.
 
 ---
 
 ## 🚀 Nasıl Çalıştırılır?
 
 1. **Proje Yükleme**:
-   - Proje dosyalarını yerel makinenize indirin.
+   - Proje dosyalarını bilgisayarınıza indirin.
    
 2. **Geliştirme Ortamı**:
    - Visual Studio ya da benzeri bir IDE'de projeyi açın.
