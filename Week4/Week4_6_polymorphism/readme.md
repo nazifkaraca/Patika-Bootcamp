@@ -28,18 +28,18 @@ A base class `BaseGeometricShape` provides common properties and methods. Each s
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/geometric-polymorphism.git
+   git clone https://github.com/nazifkaraca/Patika-Bootcamp/edit/master/Week4/Week4_6_polymorphism.git
    ```
 
 2. **Navigate to the project directory**:
    ```bash
-   cd geometric-polymorphism
+   cd Week4_6_polymorphism
    ```
 
 3. **Run the application**:
-   This project is written in Python, so make sure you have Python installed on your machine. Then, simply run:
+   This project is written in .NET C#.
    ```bash
-   python main.py
+   dotnet run
    ```
 
 ## Usage
