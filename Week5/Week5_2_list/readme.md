@@ -17,7 +17,7 @@ To get started with this project, follow these steps:
 
 1. Clone the repository to your local machine:
    ```bash
-   git clone https://github.com/nazifkaraca/patika-plus-gala-guestlist.git
+   git clone https://github.com/nazifkaraca/Patika-Bootcamp/tree/master/Week5/Week5_2_list.git
    ```
    
 2. Open the project in your favorite C# IDE (such as Visual Studio or JetBrains Rider).
