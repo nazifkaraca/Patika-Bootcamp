@@ -1,80 +1,68 @@
-﻿using System.Collections.Generic;
-using System.Net.WebSockets;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Week5_3_IMDB
+public class Film
 {
-    internal partial class Program
+    public string Name { get; set; }
+    public double ImdbScore { get; set; }
+
+    public Film(string name, double imdbScore)
     {
-        static void Main(string[] args)
+        Name = name;
+        ImdbScore = imdbScore;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        List<Film> filmList = new List<Film>();
+        bool isContinue;
+
+        // Film ekleme döngüsü
+        do
         {
-            List<List<object>> list = IMDB.GetInput();
-            IMDB.ShowList(list);
-            Console.ReadLine();
+            // Kullanıcıdan film adı ve IMDb puanı al
+            Console.Write("Film adı: ");
+            string filmName = Console.ReadLine();
+
+            Console.Write("IMDb puanı: ");
+            double imdbScore = Convert.ToDouble(Console.ReadLine());
+
+            // Listeye filmi ekle
+            filmList.Add(new Film(filmName, imdbScore));
+
+            // Kullanıcıya devam etmek isteyip istemediğini sor
+            Console.Write("\nYeni bir film eklemek ister misiniz? (y/n): ");
+            isContinue = Console.ReadLine().ToLower() == "y";
+
+        } while (isContinue);
+
+        // 1. Bütün filmleri listele
+        Console.WriteLine("\n--- Tüm Filmler ---");
+        foreach (var film in filmList)
+        {
+            Console.WriteLine($"Film: {film.Name}, IMDb Puanı: {film.ImdbScore}");
         }
 
-        public class IMDB
+        // 2. IMDb puanı 4 ile 9 arasında olan filmleri listele
+        Console.WriteLine("\n--- IMDb Puanı 4 ile 9 Arasında Olan Filmler ---");
+        var filteredByImdb = filmList.Where(f => f.ImdbScore >= 4 && f.ImdbScore <= 9).ToList();
+        foreach (var film in filteredByImdb)
         {
-            private static string _name;
-            private static double _score;
-            private static readonly List<List<object>> list = new();
-
-            public static string Name 
-            {
-                get {  return _name; }
-                set
-                {
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        _name = value;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Film adı boş olamaz!");
-                    }
-                }
-            
-            }
-
-            public static double Score
-            {
-                get { return _score; }
-                set
-                {
-                    if (value < 0 || value > 10)
-                    {
-                        Console.WriteLine("IMDB Puanı 0 ile 10 arasında bir değer almalıdır!");
-                    }
-                    else
-                    {
-                        _score = Math.Round(value, 2);
-                    }
-                }
-            }
-
-            public static List<List<object>> GetInput()
-            {
-                Console.Write("Film Adı: ");
-                Name = Console.ReadLine();
-
-                Console.Write("IMDB Puanı: ");
-                Score = Convert.ToDouble(Console.ReadLine());
-
-                list.Add([Name, Score]);
-
-                return list;
-            }
-
-            public static void ShowList(List<List<object>> list)
-            {
-                foreach (var item in list)
-                {
-                    foreach (var item2 in item)
-                    {
-                        Console.Write(item2);
-                        Console.Write(" ");
-                    }
-                }
-            }
+            Console.WriteLine($"Film: {film.Name}, IMDb Puanı: {film.ImdbScore}");
         }
+
+        // 3. İsmi 'A' ile başlayan filmleri listele
+        Console.WriteLine("\n--- İsmi 'A' ile Başlayan Filmler ---");
+        var filteredByName = filmList.Where(f => f.Name.StartsWith("A", StringComparison.OrdinalIgnoreCase)).ToList();
+        foreach (var film in filteredByName)
+        {
+            Console.WriteLine($"Film: {film.Name}, IMDb Puanı: {film.ImdbScore}");
+        }
+
+        Console.ReadLine();
     }
 }
