@@ -9,22 +9,39 @@ class Program
     {
         //1- Konsol ekranından kullanıcıya araba üretmek isteyip istemediğini soralım.Üretmek istiyorsa e, istemiyorsa h harfi ile yanıt versin. Büyük - Küçük harf duyarlılığını ortadan kaldıralım.Geçersiz bir cevap verirse, bu cevabın geçersiz olduğunu söyleyerek aynı soruyu tekrar yöneltelim.
 
-        List<Araba> carList = new List<Araba>();
-        Araba araba = new Araba();
+        List<Araba> arabalar = new();
+        ReadWriteClass rd = new();
+        bool isContinue = true;
 
-        try
+        do
         {
-            araba.Name = Console.ReadLine();
-            araba.Model = Console.ReadLine();
-            araba.Price = Console.ReadLine();
-            araba.Door = Console.ReadLine();
-        }
-        catch (Exception ex)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(ex.Message);
-            Console.ResetColor();
-        }
+            try
+            {
+                Araba araba = new Araba
+                {
+                    Name = Console.ReadLine(),
+                    Model = Console.ReadLine(),
+                    Price = Convert.ToDecimal(
+                        rd.ReadWrite("Fiyat: ", ConsoleColor.Blue)
+                        ),
+                    Door = Convert.ToInt32(Console.ReadLine())
+                };
+
+                arabalar.Add(araba);
+                foreach (var car in arabalar)
+                {
+                    Console.WriteLine(car);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+                isContinue = false;
+            }
+
+        } while (isContinue);
 
         Console.ReadKey();
 //2- Kullanıcının cevabı hayır programı sonlandıralım, evet ise bir araba nesnesi üretip özelliklerini konsol ekranından kullanıcıya girdirelim.
@@ -33,10 +50,10 @@ class Program
 
 class Araba
 {
-    public DateTime ProdDate { get; protected set; }
+    public DateTime ProdDate => DateTime.Now;
     private string _name;
     private string _model;
-    private int _price;
+    private decimal _price;
     private int _door;
 
     public int Door
@@ -55,7 +72,7 @@ class Araba
         }
     }
 
-    public int Price
+    public decimal Price
     {
         get { return _price; }
         set 
@@ -103,16 +120,35 @@ class Araba
         }
     }
 
-    public araba(string name, string model, int door, int price)
+    public Araba() { }
+
+    public Araba(string name, string model, int door, decimal price)
     {
-        proddate = datetime.now;
-        name = name;
-        model = model;
-        door = door;
-        price = price;
+        _name = name;
+        _model = model;
+        _door = door;
+        _price = price;
     }
+
+    public override string ToString()
+    {
+        return $"Araba İsmi: {Name}, Modeli: {Model}, Kapı Sayısı: {Door}, Fiyat: {Price:c3}";
+    }
+
 }
 
+class ReadWriteClass
+{
+    public string ReadWrite(string text, ConsoleColor color)
+    {
+        Console.ForegroundColor = color;
+        Console.Write(text);
+        Console.ResetColor();
+        string? input = Console.ReadLine();
+
+        return input;
+    }
+}
 //4- Kapı Sayısı için sayısal olmayan bir değer atanılmaya çalışılırsa programın exception fırlatmasını engelleyelim, uyarı mesajı verelim ve kullanıcıyı yeniden o satıra yönlendirelim. (goto komutunu araştırınız.)
 
 //5- Oluşturulan araba nesnesini arabalar isimli bir listeye atayınız.
