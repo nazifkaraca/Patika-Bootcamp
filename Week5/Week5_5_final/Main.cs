@@ -1,156 +1,89 @@
-﻿using System.Globalization;
-using System.Xml.Linq;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Week5_5_final;
-
-class Program
+namespace Week5_5_final
 {
-    static void Main(string[] args)
+    class Program
     {
-        //1- Konsol ekranından kullanıcıya araba üretmek isteyip istemediğini soralım.Üretmek istiyorsa e, istemiyorsa h harfi ile yanıt versin. Büyük - Küçük harf duyarlılığını ortadan kaldıralım.Geçersiz bir cevap verirse, bu cevabın geçersiz olduğunu söyleyerek aynı soruyu tekrar yöneltelim.
-
-        List<Araba> arabalar = new();
-        ReadWriteClass rd = new();
-        bool isContinue = true;
-
-        do
+        static void Main(string[] args)
         {
-            try
-            {
-                Araba araba = new Araba
-                {
-                    Name = Console.ReadLine(),
-                    Model = Console.ReadLine(),
-                    Price = Convert.ToDecimal(
-                        rd.ReadWrite("Fiyat: ", ConsoleColor.Blue)
-                        ),
-                    Door = Convert.ToInt32(Console.ReadLine())
-                };
+            List<Araba> arabalar = new List<Araba>();
+            bool isContinue = true;
 
+            do
+            {
+                // Gather input and create a new Araba
+                var araba = CreateAraba();
                 arabalar.Add(araba);
-                foreach (var car in arabalar)
-                {
-                    Console.WriteLine(car);
-                }
-            }
-            catch (Exception ex)
+
+                Console.Write("Araba üretmek istiyor musunuz (y/n): ");
+                isContinue = Console.ReadLine().ToLower() == "y";
+
+            } while (isContinue);
+
+            // Display all cars in the list
+            Console.WriteLine("\nÜretilen arabalar:");
+            foreach (var araba in arabalar)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(ex.Message);
-                Console.ResetColor();
-                isContinue = false;
+                Console.WriteLine(araba);
             }
 
-        } while (isContinue);
+            Console.ReadLine();  // Wait for input before closing the console
+        }
 
-        Console.ReadKey();
-//2- Kullanıcının cevabı hayır programı sonlandıralım, evet ise bir araba nesnesi üretip özelliklerini konsol ekranından kullanıcıya girdirelim.
+        // Method to gather input and create an Araba
+        static Araba CreateAraba()
+        {
+            Console.Write("Arabanın İsmi: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Arabanın Modeli: ");
+            string model = Console.ReadLine();
+
+            int serialNumber;
+            do
+            {
+                Console.Write("Arabanın Seri Numarası: ");
+            } while (!int.TryParse(Console.ReadLine(), out serialNumber));
+
+            decimal price;
+            do
+            {
+                Console.Write("Arabanın Fiyatı: ");
+            } while (!decimal.TryParse(Console.ReadLine(), out price));
+
+            int door;
+            do
+            {
+                Console.Write("Arabanın Kapı Sayısı (2 veya 4 olabilir): ");
+            } while (!int.TryParse(Console.ReadLine(), out door) || (door != 2 && door != 4));
+
+            return new Araba(name, model, serialNumber, price, door);
+        }
+    }
+
+    class Araba
+    {
+        public string Name { get; set; }
+        public string Model { get; set; }
+        public int SerialNumber { get; set; }
+        public decimal Price { get; set; }
+        public int Door { get; set; }
+        public DateTime ProdDate { get; }
+
+        public Araba(string name, string model, int serialNum, decimal price, int door)
+        {
+            this.Name = name;
+            this.Model = model;
+            this.SerialNumber = serialNum;
+            this.Price = price;
+            this.Door = door;
+            this.ProdDate = DateTime.Now;
+        }
+
+        public override string ToString()
+        {
+            return $"Seri No: {SerialNumber}, Marka: {Name}, Model: {Model}, Fiyat: {Price}, Kapı: {Door}, Üretim Tarihi: {ProdDate}";
+        }
     }
 }
-
-class Araba
-{
-    public DateTime ProdDate => DateTime.Now;
-    private string _name;
-    private string _model;
-    private decimal _price;
-    private int _door;
-
-    public int Door
-    {
-        get { return _door; }
-        set 
-        { 
-            if (value == 2 || value == 4)
-            {
-                _door = value;
-            }
-            else
-            {
-                throw new Exception("Geçersiz bir kapı sayısı girildi!");
-            }
-        }
-    }
-
-    public decimal Price
-    {
-        get { return _price; }
-        set 
-        { 
-            if (value < 0)
-            {
-                throw new Exception("Lütfen pozitif bir sayı girin!");
-            }
-            else
-            {
-                _price = value;
-            }
-        }
-    }
-
-    public string Model
-    {
-        get { return _model;; }
-        set 
-        { 
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new Exception("Araba modeli boş olamaz!");
-            }
-            else
-            {
-                _model = value;
-            }
-        }
-    }
-
-    public string Name
-    {
-        get { return _name; }
-        set 
-        { 
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new Exception("Araba ismi boş olamaz!");   
-            }
-            else
-            {
-                _name = value;
-            }
-        }
-    }
-
-    public Araba() { }
-
-    public Araba(string name, string model, int door, decimal price)
-    {
-        _name = name;
-        _model = model;
-        _door = door;
-        _price = price;
-    }
-
-    public override string ToString()
-    {
-        return $"Araba İsmi: {Name}, Modeli: {Model}, Kapı Sayısı: {Door}, Fiyat: {Price:c3}";
-    }
-
-}
-
-class ReadWriteClass
-{
-    public string ReadWrite(string text, ConsoleColor color)
-    {
-        Console.ForegroundColor = color;
-        Console.Write(text);
-        Console.ResetColor();
-        string? input = Console.ReadLine();
-
-        return input;
-    }
-}
-//4- Kapı Sayısı için sayısal olmayan bir değer atanılmaya çalışılırsa programın exception fırlatmasını engelleyelim, uyarı mesajı verelim ve kullanıcıyı yeniden o satıra yönlendirelim. (goto komutunu araştırınız.)
-
-//5- Oluşturulan araba nesnesini arabalar isimli bir listeye atayınız.
-
-//6- Kullanıcıya başka araba oluşturmak isteyip istemediğini sorunuz, evet ise program akışında 2. aşamaya geri dönünüz ve yeni bir araba üretip listeye ekleyiniz. Cevap hayır ise arabalar listesinin bütün elemanlarının Seri numaralarını ve markalarını yazdırınız
