@@ -1,6 +1,4 @@
-Merhabalar,
-
-Aşağıdaki sorgu senaryolarını dvdrental örnek veri tabanı üzerinden gerçekleştiriniz.
+# SQL Basics
 
 **1- film tablosunda bulunan title ve description sütunlarındaki verileri sıralayınız.**
 
