@@ -4,6 +4,8 @@
 
 This project is a basic ASP.NET MVC application designed to display customer and order information. Following the MVC pattern, we develop a straightforward application that shows how to create models, view models, controllers, and views for displaying customer details and their associated orders.
 
+![image](https://github.com/user-attachments/assets/8736a130-fd8f-49ea-981c-07bdcc952e8d)
+
 ### Objective
 
 The objective is to create a web application where customer and order information can be viewed on a single page. This project provides hands-on experience with ASP.NET MVC, building from model creation to the final view, where data is displayed.
