@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "Müşteri Detayları";
+}
+
+@model Week8_2_MVCProject.Models.CustomerOrderViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Müşteri Detayları</title>
+</head>
+<body>
+
+    <ul class="navbar">
+        <li><a href="~/CustomerOrders/Index">Müşteri Detayları</a></li> <!-- Müşteri Detayları linki eklendi -->
+    </ul>
+
+    <h1>@Model.Greetings</h1>
+    <h2>Müşteri Detayları</h2>
+    <p><strong>Id:</strong> @Model.Customer.Id</p>
+    <p><strong>İsim:</strong> @Model.Customer.FirstName</p>
+    <p><strong>Soyisim:</strong> @Model.Customer.LastName</p>
+    <p><strong>Eposta:</strong> @Model.Customer.Email</p>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Ürün Adı</th>
+            <th>Fiyat ₺</th>
+            <th>Miktar</th>
+            <th>Toplam Fiyat ₺</th>
+        </tr>
+        @foreach (var order in Model.Order)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.ProductName</td>
+                <td>@order.Price</td>
+                <td>@order.Quantity</td>
+                <td>@(order.Price * order.Quantity)</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>
+

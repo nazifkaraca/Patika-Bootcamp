@@ -1,0 +1,82 @@
+# .NET ve .NET Core
+bin/
+obj/
+out/
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Paketler ve Paket Yönetimi
+*.nupkg
+*.snupkg
+*.psess
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Paket Yönetimi
+packages/
+*.dSYM/
+*.deps.json
+*.runtimeconfig.json
+.lock.json
+
+# Log dosyalarý
+*.log
+
+# Yayýnlanmýþ web dosyalarý
+publish/
+*.publish.xml
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# DotCover istenmeyen dosyalar
+*.dotCover
+
+# User ayarlarý dosyalarý
+**/appsettings*.json
+appsettings.Development.json
+
+# Sertifikalar
+*.pfx
+*.p12
+
+# Assembly ve Test Coverage verileri
+*.dll
+*.pdb
+TestResults/
+
+# Temp dosyalar
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# macOS sistem dosyalarý
+.DS_Store
+
+# Windows sistem dosyalarý
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Yarn ve npm
+node_modules/
+yarn.lock
+.pnpm-debug.log
+
+# Git secret ve hassas dosyalar
+*.secret
+.env
