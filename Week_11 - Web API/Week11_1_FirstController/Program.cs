@@ -16,6 +16,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Product}/{action=Get}/{id?}"
+        );
+});
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

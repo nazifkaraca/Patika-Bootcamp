@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http.Metadata;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Week11_1_FirstController.Models;
 
@@ -20,7 +21,7 @@ namespace Week11_1_FirstController.Controllers
             return _products;
         }
 
-        [HttpGet("{id}")] // iki get metodu olduğu için burada id'nin path'ten geleceğini belirttik
+        [HttpGet("{id:int:min(1)}")] // iki get metodu olduğu için burada id'nin path'ten geleceğini belirttik
         public IActionResult Get(int id)
         {
             var product = _products.FirstOrDefault(x => x.Id == id);
@@ -32,6 +33,26 @@ namespace Week11_1_FirstController.Controllers
 
             return Ok(product);
         }
+
+        [HttpGet("search/{keyword:alpha:minLength(3)}")]
+        public IActionResult Search(string keyword)
+        {
+            return Ok();
+        }
+
+        [HttpGet("search")]
+        public IActionResult Search([FromQuery] string keyword, [FromQuery] int? page = 1)
+        {
+            return Ok();
+        }
+
+
+        [HttpGet("category/{categoryName}")]
+        public IActionResult GetProductsByCategory(string categoryName)
+        {
+            return Ok();
+        }
+
 
         [HttpPost]
         public IActionResult Post([FromBody] Product product) // verinin json'ın body'sinden geleceğini belirtiyoruz
