@@ -133,7 +133,22 @@ namespace Week11_3_GalacticTourAgency.Controllers
 
             patchDocument.ApplyTo(tour);
 
-            return NoContent(); 
+            return NoContent();
         }
+
+        [HttpPost("complex-search")]
+        public ActionResult<IEnumerable<GalacticTour>> ComplexSearch([FromQuery] string name, [FromQuery] decimal? minPrice, [FromHeader(Name = "X-Planet")] string planet, [FromBody] SearchCriteria searchCriteria)
+        {
+            // POST /api/galactictours/complex-search?name=test&minPrice=400
+            // Header: X-Planet : Mars
+            // Body:
+            //{
+            //  "DepartureDate": "2023-01-01",
+            //  "Duration": "2 Ay"
+            //}
+
+            return NoContent();
+        }
+
     }
 }
