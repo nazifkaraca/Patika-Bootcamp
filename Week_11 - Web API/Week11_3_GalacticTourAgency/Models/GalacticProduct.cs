@@ -30,5 +30,7 @@ namespace Week11_3_GalacticTourAgency.Models
         // Custom Attribute
         [GalacticElementComposition(minElements: 2, maxElements: 5)]
         public string Composition { get; set; }
+
+        public GalacticCoordinate Coordinate { get; set; }
     }
 }

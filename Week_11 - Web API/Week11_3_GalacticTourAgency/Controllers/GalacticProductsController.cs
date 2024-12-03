@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Week11_3_GalacticTourAgency.ModelBinding;
 using Week11_3_GalacticTourAgency.Models;
 
 namespace Week11_3_GalacticTourAgency.Controllers
@@ -42,6 +43,18 @@ namespace Week11_3_GalacticTourAgency.Controllers
 
             return CreatedAtAction(nameof(Post), new { id = product.Id }, product);
 
+        }
+
+        // Applying custom model binder
+        [HttpGet("products-at-location/{location}")]
+        public ActionResult<IEnumerable<GalacticProduct>> GetProductsAtLocation([ModelBinder(BinderType = typeof(GalacticCoordinateBinder))] GalacticCoordinate location)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(_products);
         }
     }
 }
