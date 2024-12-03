@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Week11_3_GalacticTourAgency.Attributes;
 
 namespace Week11_3_GalacticTourAgency.Models
 {
@@ -25,5 +26,9 @@ namespace Week11_3_GalacticTourAgency.Models
         [Range(1, 10)]
         [Display(Name = "Rating")]
         public int GalacticRating { get; set; }
+
+        // Custom Attribute
+        [GalacticElementComposition(minElements: 2, maxElements: 5)]
+        public string Composition { get; set; }
     }
 }
