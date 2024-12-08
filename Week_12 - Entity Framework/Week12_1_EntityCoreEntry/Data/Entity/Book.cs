@@ -15,7 +15,6 @@ namespace Week12_1_EntityCoreEntry.Data.Entity
         [Required] // Indicating this property required
         [StringLength(100)] // Maximum character limit
         public string Title { get; set; }
-        public string Author { get; set; }
         public int PublicationYear { get; set; }
 
         [Column("BookPrice", TypeName = "decimal(18, 2)")] // Set custom column name and type (2 floating points)
@@ -25,7 +24,11 @@ namespace Week12_1_EntityCoreEntry.Data.Entity
         [Column("LastBorrowed")] // Set custom name for a column
         public DateTime? LastBarrowedDate { get; set; }
 
-        // Navigation Reference Property
+        // Navigation Reference Properties
         public List<Review> Reviews { get; set; }
+        public BookDetail Detail { get; set; }
+        public int CategoryId { get; set; } // Foreign key for category
+        public Category Category { get; set; }
+        public List<Author> Authors { get; set; }
     }
 }
