@@ -6,8 +6,17 @@ namespace Week12_1_EntityCoreEntry.Data
 {
     public class LibraryContext : DbContext
     {
+        public LibraryContext(DbContextOptions<LibraryContext> options) : base(options) { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=localhost;Database=EntityPractice;Trusted_Connection=true");
+        }
+
         public DbSet<Book> Books { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        
 
         // Fluent API configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
