@@ -1,0 +1,6 @@
+@Week12_1_EntityCoreEntry_HostAddress = http://localhost:5049
+
+GET {{Week12_1_EntityCoreEntry_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
