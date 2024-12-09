@@ -5,10 +5,10 @@ namespace Week12_4_EduPlatform.Models
     public class Instructor : BaseModel<int>
     {
         [StringLength(50)]
-        public int FirstName { get; set; }
+        public string FirstName { get; set; }
 
         [StringLength(100)]
-        public int LastName { get; set; }
+        public string LastName { get; set; }
 
         [EmailAddress]
         public string Email { get; set; }

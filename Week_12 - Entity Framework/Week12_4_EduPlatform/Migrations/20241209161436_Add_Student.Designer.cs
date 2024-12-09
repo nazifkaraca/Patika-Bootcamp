@@ -12,8 +12,8 @@ using Week12_4_EduPlatform.Data;
 namespace Week12_4_EduPlatform.Migrations
 {
     [DbContext(typeof(EduPlatformContext))]
-    [Migration("20241209153916_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241209161436_Add_Student")]
+    partial class Add_Student
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,17 +94,28 @@ namespace Week12_4_EduPlatform.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FirstName")
+                    b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("LastName")
+                    b.Property<string>("LastName")
+                        .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Instructors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "a@a.com",
+                            FirstName = "a",
+                            LastName = "b"
+                        });
                 });
 
             modelBuilder.Entity("Week12_4_EduPlatform.Models.Student", b =>
@@ -122,13 +133,15 @@ namespace Week12_4_EduPlatform.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FirstName")
+                    b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("LastName")
+                    b.Property<string>("LastName")
+                        .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 

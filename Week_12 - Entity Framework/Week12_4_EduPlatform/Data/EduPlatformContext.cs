@@ -32,6 +32,12 @@ namespace Week12_4_EduPlatform.Data
             modelBuilder.Entity<Course>()
                         .Property(c => c.Price)
                         .HasPrecision(18, 2);
+
+            // Seed Data
+            modelBuilder.Entity<Instructor>()
+                        .HasData(
+                            new Instructor { Id = 1, FirstName = "a", LastName = "b", Email = "a@a.com" }
+                        );
         }
     }
 }
