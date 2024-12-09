@@ -1,0 +1,6 @@
+@Week12_5_HospitalManagement_DatabaseFirst_HostAddress = http://localhost:5062
+
+GET {{Week12_5_HospitalManagement_DatabaseFirst_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
