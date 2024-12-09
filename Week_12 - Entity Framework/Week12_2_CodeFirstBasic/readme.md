@@ -2,6 +2,8 @@
 
 Welcome to the **Patika Code First Database Project**! 🚀 This project demonstrates how to create a database using the **Code First** approach in **Entity Framework Core**. The database consists of two independent tables: **Movies** and **Games**. Let's dive into the details! 🌟
 
+![WhatsApp Görsel 2024-12-09 saat 14 45 45_c9af620f](https://github.com/user-attachments/assets/080b5f09-4c29-47ef-a5e3-576c23f21b3d)
+
 ---
 
 ## 🗂️ Project Overview
