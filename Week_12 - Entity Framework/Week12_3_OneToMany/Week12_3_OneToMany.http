@@ -1,0 +1,6 @@
+@Week12_3_OneToMany_HostAddress = http://localhost:5213
+
+GET {{Week12_3_OneToMany_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
