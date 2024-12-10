@@ -42,39 +42,48 @@ namespace Week12_6_Ecommercial.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomers([FromQuery] CustomerFilterDto filter)
         {
+            // Deferred execution for query 
             var query = _context.Customers.AsQueryable();
 
+            // Check if StartDate has value
             if (filter.StartDate.HasValue)
             {
-                query = query.Where(c => c.SignUpDate >= filter.StartDate.Value);
+                query = query.Where(c => c.SignUpDate >= filter.StartDate.Value); // Filter based on StartDate value
             }
 
+            // Check if EndDate has value
             if (filter.EndDate.HasValue)
             {
-                query = query.Where(c => c.SignUpDate <= filter.EndDate.Value);
+                query = query.Where(c => c.SignUpDate <= filter.EndDate.Value); // Filter based on EndDate value
             }
 
+            // Check if Name has value
             if (!string.IsNullOrWhiteSpace(filter.NameSearch))
             {
-                query = query.Where(c => c.FirstName.Contains(filter.NameSearch) || c.LastName.Contains(filter.NameSearch));
+                query = query.Where(c => c.FirstName.Contains(filter.NameSearch) || c.LastName.Contains(filter.NameSearch)); // Filter based on Name value
             }
 
+            // Check if Email has value
             if (!string.IsNullOrWhiteSpace(filter.EmailSearch))
             {
-                query = query.Where(c => c.Email.Contains(filter.EmailSearch));
+                query = query.Where(c => c.Email.Contains(filter.EmailSearch)); // Filter based on Email value
             }
 
+            // Order first LastName, then FirstName
             query = query.OrderBy(c => c.LastName)
                          .ThenBy(c => c.FirstName);
 
+            // Count filtered results
             var totalCount = await query.CountAsync();
 
+            // Fit filtered count to page size
             var totalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize);
 
+            // Pagination: It skips previous page (first 10 elements lets say) and only take number of elements specified in page size
             var customers = await query
-                                       .Skip((filter.Page - 1) * filter.PageSize)
-                                       .Take(filter.PageSize)
-                                       .Select(c => new CustomerDto
+                                       .Skip((filter.Page - 1) * filter.PageSize) // Skips previous page elements (10 elements)
+                                       .Take(filter.PageSize) // Take 10 element 
+                                       .Select(c => new CustomerDto // Select only necessary information from DTO
                                        {
                                            Id = c.Id,
                                            Email = c.Email,
@@ -82,6 +91,7 @@ namespace Week12_6_Ecommercial.Controllers
                                            SignUpDate = c.SignUpDate,
                                        }).ToListAsync();
 
+            // Return only necessary information
             var response = new
             {
                 TotalCount = totalCount,

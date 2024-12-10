@@ -91,12 +91,81 @@ namespace Week12_6_Ecommercial.Controllers
 
                 await _context.SaveChangesAsync();
 
+                await transaction.CommitAsync();
+
                 return CreatedAtAction(nameof(GetById), new { id = newOrder.Id }, newOrder);
             }
             catch (Exception)
             {
                 await transaction.RollbackAsync();
                 throw;
+            }
+        }
+
+
+        [HttpDelete("deleteold")]
+        public async Task<IActionResult> DeleteOldOrders([FromQuery] int yearsOld = 1)
+        {
+            if (yearsOld < 0) return BadRequest("Yıl bilgisi pozitif sayı olmalıdır.");
+
+            var cutoffDate = DateTime.Now.AddYears(-yearsOld);
+
+            int totalDeletedCount = 0;
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                // Batch processing
+                int batchSize = 1000;
+
+                bool continueDeletion = true;
+
+                while (continueDeletion)
+                {
+                    // Get old orders with details
+                    var oldOrders = await _context.Orders
+                                                      .Where(o => o.OrderDate < cutoffDate)
+                                                      .Include(o => o.OrderDetails)
+                                                      .Take(batchSize)
+                                                      .ToListAsync();
+
+                    // If no old orders left, break loop
+                    if (oldOrders.Count == 0)
+                    {
+                        continueDeletion = false;
+                        continue;
+                    }
+
+                    // Delete details of all orders
+                    foreach (var oldOrder in oldOrders)
+                    {
+                        _context.OrderDetails.RemoveRange(oldOrder.OrderDetails);
+                    }
+
+                    // Delete all orders
+                    _context.Orders.RemoveRange(oldOrders);
+
+                    // Count deleted orders
+                    var deletedCount = await _context.SaveChangesAsync();  
+
+                    totalDeletedCount += deletedCount;
+                }
+
+                await transaction.CommitAsync();
+
+                // Return informative message
+                return Ok(new
+                {
+                    Message = $"{totalDeletedCount} adet kayıt detaylarıyla birlikte silindi.",
+                    DeletedCount = totalDeletedCount
+                });
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+
+                return StatusCode(500, "Bir hata oluştu.");
             }
         }
     }
