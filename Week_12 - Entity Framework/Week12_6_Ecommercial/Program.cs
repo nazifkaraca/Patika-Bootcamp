@@ -6,7 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddDbContext<EcommerceContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"))
+
+    options.UseLazyLoadingProxies()
+    .UseSqlServer(builder.Configuration.GetConnectionString("Default"))
 );
 
 builder.Services.AddControllers();

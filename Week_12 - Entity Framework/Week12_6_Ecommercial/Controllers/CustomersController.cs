@@ -89,6 +89,7 @@ namespace Week12_6_Ecommercial.Controllers
                                            Email = c.Email,
                                            FullName = $"{c.FirstName} {c.LastName}",
                                            SignUpDate = c.SignUpDate,
+                                           Orders = c.Orders.ToList(),
                                        }).ToListAsync();
 
             // Return only necessary information

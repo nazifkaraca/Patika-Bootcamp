@@ -9,6 +9,7 @@
         public string PhoneNumber { get; set; }
         public DateTime SignUpDate { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        // Set virtual for lazy loading
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

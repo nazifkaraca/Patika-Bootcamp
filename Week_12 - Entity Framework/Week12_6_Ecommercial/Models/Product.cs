@@ -12,8 +12,9 @@ namespace Week12_6_Ecommercial.Models
 
         public int CategoryId { get; set; }
 
+        // Set virtual for lazy loading
         [ForeignKey(nameof(CategoryId))]
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
         public int StockQuantity { get; set; }
 
