@@ -21,7 +21,10 @@ namespace Week12_6_Ecommercial.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetById(int id)
         {
-            var order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == id);
+            var order = await _context.Orders.Include(o => o.Customer) // Get customers
+                                             .Include(o => o.OrderDetails) // Ger order details
+                                             .ThenInclude(od => od.Product) // Because products included in order details, get products AFTER order details
+                                             .FirstOrDefaultAsync(x => x.Id == id);
 
             if (order == null) return NotFound();
 
