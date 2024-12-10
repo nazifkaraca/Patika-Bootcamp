@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Week12_6_Ecommercial.Models
 {
@@ -15,5 +16,8 @@ namespace Week12_6_Ecommercial.Models
         public Category Category { get; set; }
 
         public int StockQuantity { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

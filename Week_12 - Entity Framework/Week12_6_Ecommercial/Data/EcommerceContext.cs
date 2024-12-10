@@ -12,5 +12,12 @@ namespace Week12_6_Ecommercial.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Product> Products { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>()
+                        .Property(p => p.RowVersion)
+                        .IsRowVersion();
+        }
     }
 }
