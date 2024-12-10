@@ -10,6 +10,6 @@ namespace Survivor.Data.Entity
         public int CategoryId { get; set; } // Foreign key
 
         [ForeignKey(nameof(CategoryId))] 
-        public Category Category { get; set; } // Navigation property
+        public Category? Category { get; set; } // Navigation property
     }
 }

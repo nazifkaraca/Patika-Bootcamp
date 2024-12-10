@@ -92,6 +92,8 @@ namespace Week12_6_Ecommercial.Controllers
             {
                 return StatusCode(500, "Hata oluştu.");
             }
+
+            return Ok();
         }
     }
 }

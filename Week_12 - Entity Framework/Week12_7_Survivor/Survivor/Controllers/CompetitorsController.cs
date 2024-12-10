@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Survivor.Data;
 using Survivor.Data.Entity;
+using System.Text.Json;
 
 namespace Survivor.Controllers
 {
@@ -33,11 +37,98 @@ namespace Survivor.Controllers
         }
 
         [HttpGet("categories/{CategoryId}")]
-        public ActionResult<List<Competitor>> GetByCategory(int categoryId)
+        public ActionResult<List<Competitor>> GetByCategory(int CategoryId)
         {
-            var competitors = _context.Competitors.Where(x => x.CategoryId == categoryId);
+            var competitors = _context.Categories.Where(x => x.Id == CategoryId)
+                                                 .SelectMany(x => x.Competitors)
+                                                 .ToList();
 
-            return Ok(competitors);
+            return Ok(new
+            {
+                TotalCount = competitors.Count,
+                Competitors = competitors
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] Competitor competitor)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var newCompetitor = new Competitor
+            {
+                FirstName = competitor.FirstName,
+                LastName = competitor.LastName,
+                CategoryId = competitor.CategoryId,
+            };
+
+            _context.Competitors.Add(newCompetitor);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new { id = newCompetitor.Id }, newCompetitor);
+        }
+
+        [HttpPut("{id:int:min(1)}")]
+        public IActionResult UpdateById(int id, [FromBody] Competitor competitor)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var existingCompetitor = _context.Competitors.FirstOrDefault(x => x.Id == id);
+
+            if (existingCompetitor == null) return NotFound($"Competitor with {id} id not found.");
+
+            // Check if JSON is default "string" or null 
+            existingCompetitor.FirstName = string.IsNullOrWhiteSpace(competitor.FirstName) || competitor.FirstName == "string"
+                ? existingCompetitor.FirstName // If null or default, keep the original name
+                : competitor.FirstName; // else update the name
+
+            // Check if JSON is default "string" or null 
+            existingCompetitor.LastName = string.IsNullOrWhiteSpace(competitor.LastName) || competitor.LastName == "string"
+                ? existingCompetitor.LastName // If null or default, keep the original surname
+                : competitor.LastName; // else update the surname
+
+            // Check if JSON is default null 
+            existingCompetitor.CategoryId = competitor.CategoryId == 0 
+                ? existingCompetitor.CategoryId // If null, keep the original category id
+                : competitor.CategoryId; // else update the category
+
+            existingCompetitor.ModifiedDate = DateTime.Now;
+
+
+            _context.Competitors.Update(existingCompetitor);
+
+            _context.SaveChanges();
+
+            return Ok($"Competitor {existingCompetitor.FirstName} {existingCompetitor.LastName} is successfully updated.");
+        }
+
+        [HttpDelete("{id:int:min(1)}")]
+        public IActionResult DeleteById(int id)
+        {
+            var competitor = _context.Competitors.FirstOrDefault(x => x.Id == id);
+
+            if (competitor == null) return NotFound("Related competitor could not be found.");
+
+            // Soft delete
+            _context.Competitors.Remove(competitor);
+            _context.SaveChanges();
+
+            return Ok($"Hard delete for the competitor ({competitor.FirstName} {competitor.LastName}) completed.");
+        }
+
+        [HttpPatch("{id:int:min(1)}/softdelete")]
+        public IActionResult SoftDelete(int id)
+        {
+            var competitor = _context.Competitors.FirstOrDefault(x => x.Id == id);
+            if (competitor == null) return NotFound($"Competitor with {id} id not found.");
+
+            competitor.IsDeleted = true;
+            competitor.ModifiedDate = DateTime.Now;
+            _context.SaveChanges();
+
+            return Ok($"Competitor {competitor.FirstName} {competitor.LastName} ({id}) marked as deleted.");
         }
     }
 }
