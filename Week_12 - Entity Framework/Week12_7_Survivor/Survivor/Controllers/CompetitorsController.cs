@@ -118,7 +118,7 @@ namespace Survivor.Controllers
             return Ok($"Hard delete for the competitor ({competitor.FirstName} {competitor.LastName}) completed.");
         }
 
-        [HttpPatch("{id:int:min(1)}/softdelete")]
+        [HttpPatch("softdelete/{id:int:min(1)}")]
         public IActionResult SoftDelete(int id)
         {
             var competitor = _context.Competitors.FirstOrDefault(x => x.Id == id);
