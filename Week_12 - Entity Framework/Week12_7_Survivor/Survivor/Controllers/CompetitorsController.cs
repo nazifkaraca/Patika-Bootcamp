@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Survivor.Data;
 using Survivor.Data.Entity;
+using Survivor.Dto;
 using System.Text.Json;
 
 namespace Survivor.Controllers
@@ -23,7 +24,12 @@ namespace Survivor.Controllers
         [HttpGet]
         public ActionResult<List<Competitor>> Get()
         {
-            return _context.Competitors.ToList();
+            var competitors = _context.Competitors.ToList();
+            return Ok(new
+            {
+                TotalCount = competitors.Count,
+                Competitors = competitors
+            });
         }
 
         [HttpGet("{id:int:min(1)}")]
@@ -51,7 +57,7 @@ namespace Survivor.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Competitor competitor)
+        public IActionResult Create([FromBody] CompetitorDto competitor)
         {
             if (!ModelState.IsValid)
             {
@@ -71,7 +77,7 @@ namespace Survivor.Controllers
         }
 
         [HttpPut("{id:int:min(1)}")]
-        public IActionResult UpdateById(int id, [FromBody] Competitor competitor)
+        public IActionResult UpdateById(int id, [FromBody] CompetitorDto competitor)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -79,20 +85,20 @@ namespace Survivor.Controllers
 
             if (existingCompetitor == null) return NotFound($"Competitor with {id} id not found.");
 
-            // Check if JSON is default "string" or null 
-            existingCompetitor.FirstName = string.IsNullOrWhiteSpace(competitor.FirstName) || competitor.FirstName == "string"
-                ? existingCompetitor.FirstName // If null or default, keep the original name
-                : competitor.FirstName; // else update the name
+            // Check if JSON is default "string"
+            existingCompetitor.FirstName = competitor.FirstName == "string"
+                                         ? existingCompetitor.FirstName // If null or default, keep the original name
+                                         : competitor.FirstName; // else update the name
 
-            // Check if JSON is default "string" or null 
-            existingCompetitor.LastName = string.IsNullOrWhiteSpace(competitor.LastName) || competitor.LastName == "string"
-                ? existingCompetitor.LastName // If null or default, keep the original surname
-                : competitor.LastName; // else update the surname
+            // Check if JSON is default "string"
+            existingCompetitor.LastName = competitor.LastName == "string"
+                                        ? existingCompetitor.LastName // If null or default, keep the original surname
+                                        : competitor.LastName; // else update the surname
 
             // Check if JSON is default null 
             existingCompetitor.CategoryId = competitor.CategoryId == 0 
-                ? existingCompetitor.CategoryId // If null, keep the original category id
-                : competitor.CategoryId; // else update the category
+                                          ? existingCompetitor.CategoryId // If null, keep the original category id
+                                          : competitor.CategoryId; // else update the category
 
             existingCompetitor.ModifiedDate = DateTime.Now;
 

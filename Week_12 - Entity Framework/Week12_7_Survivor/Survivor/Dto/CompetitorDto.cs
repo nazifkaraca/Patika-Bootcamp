@@ -1,6 +1,8 @@
-﻿namespace Survivor.Dto
+﻿using Survivor.Data.Entity;
+
+namespace Survivor.Dto
 {
-    public class CompetitorDto
+    public class CompetitorDto : BaseEntity<int>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Survivor.Data;
 using Survivor.Data.Entity;
+using Survivor.Dto;
 
 namespace Survivor.Controllers
 {
@@ -20,7 +21,13 @@ namespace Survivor.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.Categories.ToList());
+            var categories = _context.Categories.ToList();
+
+            return Ok(new
+            {
+                TotalCount = categories.Count,
+                Categories = categories
+            });
         }
 
         // Get by category id
@@ -35,7 +42,7 @@ namespace Survivor.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Category category)
+        public IActionResult Create([FromBody] CategoryDto category)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -54,11 +61,15 @@ namespace Survivor.Controllers
         }
 
         [HttpPut("{id:int:min(1)}")]
-        public IActionResult UpdateById(int id)
+        public IActionResult UpdateById(int id, [FromBody] CategoryDto category)
         {
             var existingCategory = _context.Categories.FirstOrDefault(x => x.Id == id);
 
             if (existingCategory == null) return NotFound($"Category with {id} id not found.");
+
+            existingCategory.Name = category.Name;
+            existingCategory.IsDeleted = category.IsDeleted;
+            existingCategory.ModifiedDate = DateTime.Now;
 
             _context.Categories.Update(existingCategory);
             _context.SaveChanges();
