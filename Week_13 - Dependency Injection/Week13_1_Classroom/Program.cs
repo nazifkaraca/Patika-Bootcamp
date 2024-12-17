@@ -38,7 +38,7 @@
 
     public class ClassRoom
     {
-        public readonly Teacher _teacher;
+        public readonly ITeacher _teacher;
 
         public ClassRoom(Teacher teacher)
         {
