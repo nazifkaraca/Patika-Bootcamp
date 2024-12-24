@@ -16,6 +16,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"))
 );
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequiredLength = 6;
+
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // Hatalı giriş sonrası timeout
+    options.Lockout.MaxFailedAccessAttempts = 5; // Maksimum hata yapma sayısı
+    options.Lockout.AllowedForNewUsers = true; // Yeni kullanıcılar için lockedout geçerliliği
+});
+
 // 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>() // Identity bilgilerini nerede saklayacağımızı belirlediğimiz alan
