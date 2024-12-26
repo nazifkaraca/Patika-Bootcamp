@@ -14,12 +14,14 @@ namespace _14_1_Identity.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager; // Sign In and Register operations
         private readonly RoleManager<IdentityRole> _roleManager; // Role configuration
+        private readonly IConfiguration _configuration; // Token
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _configuration = configuration;
         }
 
         // Sign Up
@@ -59,7 +61,14 @@ namespace _14_1_Identity.Controllers
 
                 if (result.Succeeded)
                 {
-                    return Ok(new { message = "Login successful." });
+                    // Token assign
+                    var token = Helper.GenerateJwtToken(
+                            model.Email,
+                            _configuration["Jwt:Key"],
+                            _configuration["Jwt:Issuer"],
+                            _configuration["Jwt:Audience"]
+                        );
+                    return Ok(new { message = "Login successful.", token = token });
                 }
                 else
                 {
