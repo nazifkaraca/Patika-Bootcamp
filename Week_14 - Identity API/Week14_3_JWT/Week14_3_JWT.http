@@ -1,0 +1,6 @@
+@Week14_3_JWT_HostAddress = http://localhost:5023
+
+GET {{Week14_3_JWT_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
